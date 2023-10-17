@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS miner_type_summary (
+	hashrate NUMERIC,
+	miner_type VARCHAR(50),
+	time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
