@@ -1,31 +1,27 @@
-from datetime import datetime, timedelta
 from airflow import DAG
-from airflow.operators.ssh_operator import SSHOperator
+from airflow.operators.bash_operator import BashOperator
+from datetime import datetime
 
-# Define the default_args dictionary
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': datetime(2023, 10, 16),
+    'start_date': datetime(2023, 10, 19),
     'email_on_failure': False,
     'email_on_retry': False,
     'retries': 1,
-    'retry_delay': timedelta(minutes=5),
 }
 
-# Define the DAG
 dag = DAG(
-    'execute_remote_script',
+    'remote_script_execution_ssh',
     default_args=default_args,
-    description='DAG to execute a remote Python script',
-    schedule_interval=timedelta(days=1),  # Adjust as needed
-    catchup=False,
+    description='A simple DAG to execute a script on a remote machine',
+    schedule_interval='@once',
 )
 
-# Define the SSHOperator
-execute_script = SSHOperator(
-    task_id='execute_script',
-    ssh_conn_id='ssh_connector_to_surveyor_server',  # Define your SSH connection in Airflow
-    command='python3 /home/iliastepanov/server.py',  # Adjust path and script name
+run_remote_script = BashOperator(
+    task_id='run_remote_script_ssh',
+    bash_command='ssh -i /home/iliastepanov/.ssh/ssh_key iliastepanov@34.125.37.209 "python3 /home/iliastepanov/server.py"',
     dag=dag,
 )
+
+run_remote_script
