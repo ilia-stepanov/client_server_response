@@ -15,12 +15,12 @@ dag = DAG(
     'poll_mainer_dag',
     default_args=default_args,
     description='A DAG executes poll_miner function in another VM through SSH every 2 minutes',
-    schedule_interval=timedelta(minutes=2)
+    schedule_interval=timedelta(minutes=2),
 )
 
 run_remote_script = BashOperator(
     task_id='poll_mainer_task',
-    bash_command='ssh -i /home/iliastepanov/.ssh/ssh_key iliastepanov@34.125.37.209 "python3 /home/iliastepanov/run_script.py"',
+    bash_command='ssh -i /home/iliastepanov/.ssh/ssh_key iliastepanov@34.125.37.209 "python3 /home/iliastepanov/poll_miner.py"',
     dag=dag,
 )
 

@@ -1,4 +1,5 @@
 import socket
+import threading
 import requests
 import json
 
@@ -31,9 +32,22 @@ def poll_miner(miner_ip):
     finally:
         client_socket.close()
 
-
-if __name__ == "__main__":
-    miner_ips = ['34.16.175.90', '34.125.144.20']
-    for miner_ip in miner_ips:
-        poll_miner(miner_ip)
         
+def run_script(miner_ips):
+    max_threads = 350
+    threads = []
+    semaphore = threading.BoundedSemaphore(value=max_threads)
+
+    for miner_ip in miner_ips:
+        thread = threading.Thread(target=poll_miner, args=(miner_ip,))
+        threads.append(thread)
+        thread.start()
+        semaphore.acquire()
+
+    for thread in threads:
+        thread.join()
+        semaphore.release()
+        
+if __name__ == "__main__":
+     miner_ips = ['34.125.131.135', '34.125.144.20']
+     run_script(miner_ips)

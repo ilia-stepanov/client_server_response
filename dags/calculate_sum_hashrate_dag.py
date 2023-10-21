@@ -24,3 +24,5 @@ capture_hashrate_task = PythonOperator(
     task_id='calculate_sum_hashrate_task',
     python_callable=calculate_sum_hashrate,
     dag=dag)
+
+capture_hashrate_task
