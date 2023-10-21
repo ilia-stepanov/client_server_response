@@ -1,7 +1,7 @@
-from flask import Flask, request, jsonify #, render_template
-import psycopg2
+from flask import Flask, request, jsonify
 import json
-from get_sql_query import get_sql_query
+from utils import get_sql_query, connect_to_postgres
+import random
 
 app = Flask(__name__)
 
@@ -11,34 +11,21 @@ def insert_post_json_to_postgres():
     print(json_response)
     # Parse input json
     ip = json_response['ip']
+    ip = f'{random.randint(10, 99)}.{random.randint(100, 999)}.{random.randint(100, 999)}.{random.randint(100, 999)}' 
     hashrate = json_response['STATS'][0]['hashrate']
     fan_speeds = json_response['STATS'][0]['fan']
     miner_type = json_response['INFO']['type']
     elapsed_time = json_response['STATS'][0]['elapsed']
 
-    # Connect to postgres
-    conn = psycopg2.connect(
-        database='postgres',
-        user='postgres',
-        password='postgres',
-        host='localhost', 
-        port='5432')
-
+    conn = connect_to_postgres()
     cur = conn.cursor()
     try:
-        # select ip in miner_stats table
-        select_miner_stats = get_sql_query('sqls/select_miner_stats.sql')
-        cur.execute(select_miner_stats, (ip,))
+        cur.execute(get_sql_query('sqls/select_miner_stats.sql'), (ip,))
         ip_exists = cur.fetchone()
-
-        # check if ip exists in miner_stats table: exist - update else - insert
         if ip_exists:
-            update_miner_stats = get_sql_query('sqls/update_miner_stats.sql')
-            cur.execute(update_miner_stats, (hashrate, fan_speeds, miner_type, elapsed_time, ip))
+            cur.execute(get_sql_query('sqls/update_miner_stats.sql'), (hashrate, fan_speeds, miner_type, elapsed_time, ip))
         else:
-            insert_miner_stats = get_sql_query('sqls/insert_miner_stats.sql')
-            cur.execute(insert_miner_stats, (ip, hashrate, fan_speeds, miner_type, elapsed_time))
-
+            cur.execute(get_sql_query('sqls/insert_miner_stats.sql'), (ip, hashrate, fan_speeds, miner_type, elapsed_time))
         conn.commit()
   
     except Exception as e:
