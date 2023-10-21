@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from main_server.calculate_sum_hashrate import calculate_sum_hashrate
-import psycopg2
+
 
 default_args = {
     'owner': 'iliastepanov',

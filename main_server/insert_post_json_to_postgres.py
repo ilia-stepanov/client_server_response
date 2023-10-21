@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify
-import json
 from utils import get_sql_query, connect_to_postgres
 import random
 

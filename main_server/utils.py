@@ -1,11 +1,10 @@
-import psycopg2
-
 def get_sql_query(file_directory):
     with open(file_directory, 'r') as file:
         return file.read()
     
 
 def connect_to_postgres():
+    import psycopg2
     conn = psycopg2.connect(
     database='postgres',
     user='postgres',
