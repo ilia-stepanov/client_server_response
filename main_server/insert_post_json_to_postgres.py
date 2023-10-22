@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route('/api/receive', methods=['POST'])
 def insert_post_json_to_postgres():
     json_response = request.get_json()
-    print(json_response)
+    #print(json_response)
     # Parse input json
     ip = json_response['ip']
     ip = f'{random.randint(10, 99)}.{random.randint(100, 999)}.{random.randint(100, 999)}.{random.randint(100, 999)}' 

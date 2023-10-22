@@ -4,23 +4,8 @@ import time
 from datetime import datetime
 import random
 
-def start_server():
-	host = '0.0.0.0'
-	port = 12345
-
-	server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	server_socket.bind((host, port))
-	server_socket.listen(1)
-
-	print(f"Server listening on {host}:{port}")
-	while True:
-		client_socket, addr = server_socket.accept()
-		print(f"Connection from: {addr}")
-
-		message = client_socket.recv(1024).decode()
-		print(f"Received message: {message}")
-
-		response= {
+def create_response():
+	response = {
       "STATUS": {
             "STATUS": "S",
             "when": int(time.time()),
@@ -41,10 +26,33 @@ def start_server():
             "hwp_total": 0.0,
             "miner-mode": 0,
             "freq-level": 100}]}
-		response = json.dumps(response)
-		if message == 'stats':
-			client_socket.sendall(response.encode())
-		client_socket.close()
+	return response
+	
+def start_server():
+	host = '0.0.0.0'
+	port = 12345
+
+	server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	server_socket.bind((host, port))
+	server_socket.listen(1)
+
+	print(f"Server listening on {host}:{port}")
+	while True:
+		try:
+			client_socket, addr = server_socket.accept()
+			print(f"Connection from: {addr}")
+
+			message = client_socket.recv(1024).decode()
+			print(f"Received message: {message}")
+
+			response = create_response()
+			response = json.dumps(response)
+			if message == 'stats':
+				client_socket.sendall(response.encode())
+		except Exception as e:
+			print(e)
+		finally:
+			client_socket.close()
 
 if __name__ == "__main__":
     start_server()

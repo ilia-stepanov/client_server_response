@@ -25,7 +25,7 @@ def poll_miner(miner_ip):
         response = client_socket.recv(1024).decode()
         response = json.loads(response)
         response['ip'] = miner_ip
-        print(f"Received response: {response}")
+        #print(f"Received response: {response}")
         send_json_to_cloud(response)
     except Exception as e:
         print(f"Error: {e}")
