@@ -38,6 +38,7 @@ def start_server():
 
 	print(f"Server listening on {host}:{port}")
 	while True:
+		client_socket = None
 		try:
 			client_socket, addr = server_socket.accept()
 			print(f"Connection from: {addr}")
@@ -51,8 +52,10 @@ def start_server():
 				client_socket.sendall(response.encode())
 		except Exception as e:
 			print(e)
+			print(f"Received data: {client_socket.recv(1024)}")
 		finally:
-			client_socket.close()
+			if client_socket:
+				client_socket.close()
 
 if __name__ == "__main__":
     start_server()
