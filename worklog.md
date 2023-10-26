@@ -38,3 +38,15 @@ This is local non Docker way how kafka was installed and works:
 788  bin/kafka-console-consumer.sh --topic test --bootstrap-server localhost:9092 --from-beginning
 
 Also I create kafka_producer for miner servers and I make create_response function separate because it's used now in 2 different scripts.
+
+
+# Date:		
+25-10-2023
+# What's going on
+Started thinking about time series DB like InfluxDB, Prometheus etc. (examples https://www.reddit.com/r/MoneroMining/comments/d684pi/xmrig_mining_monitoring_with_prometheus_grafana/
+https://github.com/jouir/mining-dashboards
+https://github.com/MrClappy/MinerDashboards
+)
+
+Also instead of creating thousands of dockers I can use multithreading for python Kafka consumer for testing purposes.
+
