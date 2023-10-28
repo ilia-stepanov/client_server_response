@@ -41,7 +41,7 @@ Also I create kafka_producer for miner servers and I make create_response functi
 
 
 # Date:		
-25-10-2023
+26-10-2023
 # What's going on
 Started thinking about time series DB like InfluxDB, Prometheus etc. (examples https://www.reddit.com/r/MoneroMining/comments/d684pi/xmrig_mining_monitoring_with_prometheus_grafana/
 https://github.com/jouir/mining-dashboards
@@ -50,3 +50,8 @@ https://github.com/MrClappy/MinerDashboards
 
 Also instead of creating thousands of dockers I can use multithreading for python Kafka consumer for testing purposes.
 
+
+# Date:		
+28-10-2023
+# What's going on
+Started implementing the next idea: kafka gets data from miners -> Python through Kafka API (confluent_kafka) process this data and checks alert event -> Python writes this data into analytical DB. Another approch is Flink which is much simpler scalable.
