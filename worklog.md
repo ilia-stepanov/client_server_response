@@ -59,4 +59,18 @@ Started implementing the next idea: kafka gets data from miners -> Python throug
 ## Date:		
 29-10-2023
 ## What's going on
-Added System Design Document (SSD)
+Added System Design Document (SSD).
+I managed to install clickhouse and tested it from second VM. That works fine.
+Commands I used below
+sudo apt-get update && sudo apt-get upgrade
+
+sudo apt-get install apt-transport-https dirmngr
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv E0C56BD4
+echo "deb https://repo.clickhouse.tech/deb/stable/ main/" | sudo tee \
+/etc/apt/sources.list.d/clickhouse.list
+sudo apt-get update
+sudo apt-get install clickhouse-server clickhouse-client
+
+sudo service clickhouse-server start
+
+clickhouse-client
